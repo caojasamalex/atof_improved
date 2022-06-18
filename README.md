@@ -3,7 +3,7 @@
 
 ## Basic Overview
 
-The main goal of this project is to develop a software solution that will efficiently and effectevly summarize large CSV files provided by a scientific institutes into a much smaller files.
+The main goal of this project is to develop a software solution that will efficiently and effectively summarize large CSV files provided by a scientific institutes into a much smaller files.
 
 Function atof()  (_atof - alpha-to-float_) is function that, as a name says, converts alpha values into float values. But there is one problem - Function is not working with scientific notation of numbers, like 43.23e<sup>+23</sup>
 
