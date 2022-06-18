@@ -90,7 +90,7 @@ ls
 ./main
 ```
 
-#### IDE:
+##### IDE:
 
 *After you opened file from a IDE, you can press Run button and code will execute*
 
