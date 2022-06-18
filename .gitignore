@@ -1,0 +1,6 @@
+
+*.json
+*.plist
+main.dSYM/Contents/Resources/DWARF/main
+output.csv
+output.err

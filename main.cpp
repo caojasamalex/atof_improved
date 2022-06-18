@@ -212,7 +212,21 @@ void separate(vector<Record> &records, stringstream &line, int &pos) {
     getline(line,c,',');
 
     if(!isRegular(b)){
-        errorout << "Line " << pos+2 << " cannot be converted into a number. Original value " << b << ", date " << a << endl;
+        char delimiter{};
+
+        if(a.find('/') != string::npos){
+            delimiter = '/';
+        } else if(a.find('.') != string::npos){
+            delimiter = '.';
+        }
+        stringstream ss(a);
+        string temp1{},temp2{},temp3{};
+
+        getline(ss,temp1,delimiter);
+        getline(ss,temp2,delimiter);
+        getline(ss,temp3,delimiter);
+
+        errorout << "Line " << pos+2 << " cannot be converted into a number. Original value " << b << ", date " << temp1 << "." << temp2 << "." << temp3 << "." << endl;
     } else {
         records[pos].setDate(a);
         records[pos].setValue(atof_improved(b));
@@ -229,7 +243,6 @@ void separateDate(vector<Record> &records, string str, const int &pos){
         delimiter = '/';
     } else if(str.find('.') != string::npos){
         delimiter = '.';
-    } else {
     }
 
     while(getline(strs,temp,delimiter)){
