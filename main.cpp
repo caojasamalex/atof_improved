@@ -48,10 +48,9 @@ class Record{
     private:
         string date{}, comment{};
         double value{};
-    
-    public:
-
         int day{}, month{}, year{};
+
+    public:
 
         string setDate(const string &str){ return date = str; }
         string setComment(const string &str){ return comment = str; }
@@ -71,7 +70,6 @@ class Record{
 };
 
 int main(){
-
     ifstream inputfile("input.csv");
     if(!inputfile.is_open()) throw runtime_error("Error ocurred while opening the file"); // Checking if the file is opened or there was error while opening
     ofstream errorout ("output.err");
@@ -86,7 +84,6 @@ int main(){
         merenja.push_back(Record());
         stringstream ss(line);
         separate(merenja,ss,i);
-        separateDate(merenja,merenja[i].getDateStr(),i);
         i++;
     }
 
@@ -211,53 +208,29 @@ void separate(vector<Record> &records, stringstream &line, int &pos) {
     getline(line,b,',');
     getline(line,c,',');
 
+    char delimiter{};
+
+    if(a.find('/') != string::npos){
+        delimiter = '/';
+    } else if(a.find('.') != string::npos){
+        delimiter = '.';
+    }
+    stringstream ss(a);
+    string temp1{},temp2{},temp3{};
+
+    getline(ss,temp1,delimiter);
+    getline(ss,temp2,delimiter);
+    getline(ss,temp3,delimiter);
+
     if(!isRegular(b)){
-        char delimiter{};
-
-        if(a.find('/') != string::npos){
-            delimiter = '/';
-        } else if(a.find('.') != string::npos){
-            delimiter = '.';
-        }
-        stringstream ss(a);
-        string temp1{},temp2{},temp3{};
-
-        getline(ss,temp1,delimiter);
-        getline(ss,temp2,delimiter);
-        getline(ss,temp3,delimiter);
-
         errorout << "Line " << pos+2 << " cannot be converted into a number. Original value " << b << ", date " << temp1 << "." << temp2 << "." << temp3 << "." << endl;
     } else {
         records[pos].setDate(a);
         records[pos].setValue(atof_improved(b));
         records[pos].setComment(c);
-    }
-}
-
-void separateDate(vector<Record> &records, string str, const int &pos){
-    stringstream strs(str);
-    char delimiter{}; string temp{};
-    int i{0};
-
-    if(str.find('/') != string::npos){
-        delimiter = '/';
-    } else if(str.find('.') != string::npos){
-        delimiter = '.';
-    }
-
-    while(getline(strs,temp,delimiter)){
-        switch(i){
-            case 0:
-                records[pos].setDay(stoi(temp));
-                break;
-            case 1:
-                records[pos].setMonth(stoi(temp));
-                break;
-            case 2:
-                records[pos].setYear(stoi(temp));
-                break;
-        }
-        i++;
+        records[pos].setDay(stoi(temp1));
+        records[pos].setMonth(stoi(temp2));
+        records[pos].setYear(stoi(temp3));
     }
 }
 
