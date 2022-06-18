@@ -73,17 +73,18 @@ int main(){
     ifstream inputfile("input.csv");
     if(!inputfile.is_open()) throw runtime_error("Error ocurred while opening the file"); // Checking if the file is opened or there was error while opening
     ofstream errorout ("output.err");
-    if(!errorout.is_open()) throw runtime_error("Error ocurred while opening the file");
+    if(!errorout.is_open()) throw runtime_error("Error ocurred while opening the file");  // Checking if the file is opened or there was error while opening
     
-    vector<Record> merenja{}; // Vector of objects from record structure
+    vector<Record> merenja{};       // Vector of objects from record structure
     int i{0};
     string line{};
 
-    getline(inputfile,line); // Skipping first line of a CSV file (Header)
+    getline(inputfile,line);        // Skipping first line of a CSV file (Header)
     while(getline(inputfile,line)){
+        // Gets one line of input file until the end of file
         merenja.push_back(Record());
         stringstream ss(line);
-        separate(merenja,ss,i);
+        separate(merenja,ss,i);     // Calling function for separation of read line
         i++;
     }
 
@@ -95,10 +96,10 @@ int main(){
         test++;
     }
 
-    transferValues(merenja,allSummary);
-    outputValues(allSummary);
-    inputfile.close();
-    errorout.close();
+    transferValues(merenja,allSummary); // Calling function for transfering values from records to summary vetor
+    outputValues(allSummary);           // Calling function for ouptputing values
+    inputfile.close();                  // Closing file
+    errorout.close();                   // Closing file
     return 1;
 }
 
@@ -106,11 +107,14 @@ bool isRegular(const string &str){
     for(int jot{0}; jot<str.length();jot++){
         if((str[jot] >= 48 && str[jot] < 58) || tolower(str[jot]) == 'e' || str[jot] == '+' || str[jot] == '-' || str[jot] == '.')
         {
+            // Checks if the character is not allowed, if character is allowed it continues to the next character.
             continue;
         } else {
+            // If character is not allowed loop breaks and returns value of false.
             return 0;
         }
     }
+    // if the program came to the end of the loop and not returned false value it means that the string has only allowed characters so it returns value of true.
     return 1;
 }
 
@@ -198,7 +202,6 @@ double atof_improved(const string &str){
 
 void separate(vector<Record> &records, stringstream &line, int &pos) {
 
-    // Function that reads one line of a CSV file, separates that line into 3 pieces and stores it into suitable variables.
     ofstream errorout;
     errorout.open("output.err",ios_base::app);
     if(!errorout.is_open()) throw runtime_error("Error ocurred while opening the file");
@@ -211,20 +214,24 @@ void separate(vector<Record> &records, stringstream &line, int &pos) {
     char delimiter{};
 
     if(a.find('/') != string::npos){
+        // If '/' is found in date, '/' is delimiter
         delimiter = '/';
     } else if(a.find('.') != string::npos){
+        // If '.' is found in date, '.' is delimiter
         delimiter = '.';
     }
     stringstream ss(a);
     string temp1{},temp2{},temp3{};
 
-    getline(ss,temp1,delimiter);
-    getline(ss,temp2,delimiter);
-    getline(ss,temp3,delimiter);
+    getline(ss,temp1,delimiter); // Separating first part of stringstream and stores it to a temp1 string (Day)
+    getline(ss,temp2,delimiter); // Separating second part of stringstream and stores it to a temp2 string (Month)
+    getline(ss,temp3,delimiter); // Separating third part of stringstream and stores it to a temp3 string (Year)
 
     if(!isRegular(b)){
+        // Calling function to check content of string. If function returns false, that means that there is not allowed characters inside of b.
         errorout << "Line " << pos+2 << " cannot be converted into a number. Original value " << b << ", date " << temp1 << "." << temp2 << "." << temp3 << "." << endl;
     } else {
+        // If function returns false, b is contained only of allowed characters. Now we need to forward suitable values to a suitable variables.
         records[pos].setDate(a);
         records[pos].setValue(atof_improved(b));
         records[pos].setComment(c);
@@ -235,6 +242,10 @@ void separate(vector<Record> &records, stringstream &line, int &pos) {
 }
 
 void transferValues(vector<Record> &rec, vector<Summary> &summ){
+    
+    // Getting two vectors, first vector from record objects, second vector from summary objects.
+    // After that in for loop we are declaring values from records to summary.
+
     for(int num{0}; num < rec.size(); num++){
         int day = rec[num].getDay();
         int month = rec[num].getMonth();
@@ -247,7 +258,9 @@ void transferValues(vector<Record> &rec, vector<Summary> &summ){
 }
 
 void outputValues(vector<Summary> &summ){
-    
+    //
+    //  We need to open file for output and we need to output all objects that have 1 or more records.
+    //
     ofstream output("output.csv");
     if(!output.is_open()) throw runtime_error("Error ocurred while opening the file");
 
