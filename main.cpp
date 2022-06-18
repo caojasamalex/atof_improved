@@ -49,7 +49,7 @@ class Record{
         string date{}, comment{};
         double value{};
         int day{}, month{}, year{};
-        
+
     public:
 
         string setDate(const string &str){ return date = str; }
@@ -70,7 +70,6 @@ class Record{
 };
 
 int main(){
-
     ifstream inputfile("input.csv");
     if(!inputfile.is_open()) throw runtime_error("Error ocurred while opening the file"); // Checking if the file is opened or there was error while opening
     ofstream errorout ("output.err");
