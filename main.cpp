@@ -7,7 +7,6 @@
 
 using namespace std;
 
-//struct record;
 class Record;
 class Summary;
 bool isRegular(const string&);
@@ -15,14 +14,9 @@ bool isLeap(const int&);
 bool regularDate(const int&, const int&, const int&);
 double atof_improved(const string&);
 void separateDate(vector<Record>&, string, const int&);
-void separate(vector<Record>&, stringstream&, const int&);
-
-// struct record {
-//     string date;
-//     string first_value;
-//     string comment;
-//     double value;
-// };
+void separate(vector<Record>&, stringstream&, int&);
+void transferValues(vector<Record>&, vector<Summary>&);
+void outputValues(vector<Summary>&);
 
 class Summary{
     private:
@@ -36,13 +30,10 @@ class Summary{
         string setName(const string &str){ return name = str; }
         
         int addI(){ return i += 1; }
-
         double addSum(const double &val){ return sum += val; }
 
         string getName(){ return name; }
-
         int getI(){ return i; }
-
         double getSum(){ return sum; }
 
         Summary(){
@@ -63,29 +54,29 @@ class Record{
         int day{}, month{}, year{};
 
         string setDate(const string &str){ return date = str; }
-
         string setComment(const string &str){ return comment = str; }
-
         double setValue(const double &val){ return value = val; }
 
         string getDateStr(){ return date; }
-        
         string getComment(){ return comment; }
-
         double getValue(){ return value; }
 
         int setDay(const int &val){ return day = val; }
-
         int setMonth(const int &val){ return month = val; }
-
         int setYear(const int &val){ return year = val; }
+
+        int getDay() { return day; }
+        int getMonth() { return month; }
+        int getYear() { return year; }
 };
 
 int main(){
 
     ifstream inputfile("input.csv");
     if(!inputfile.is_open()) throw runtime_error("Error ocurred while opening the file"); // Checking if the file is opened or there was error while opening
-
+    ofstream errorout ("output.err");
+    if(!errorout.is_open()) throw runtime_error("Error ocurred while opening the file");
+    
     vector<Record> merenja{}; // Vector of objects from record structure
     int i{0};
     string line{};
@@ -99,34 +90,19 @@ int main(){
         i++;
     }
 
-    for(Record n: merenja){
-        cout << n.day << "." << n.month << "." << n.year << "\t";
-        cout << n.getValue() << "\t";
-        cout << n.getComment() << endl;
+    vector<Summary> allSummary{};
+    allSummary.resize(12);
+    int test{0};
+    for(string s:{"Januar","Februar","Mart","April","Maj","Jun","Jul","Avgust","Septembar","Oktobar","Novembar","Decembar"}){
+        allSummary[test].setName(s);
+        test++;
     }
 
+    transferValues(merenja,allSummary);
+    outputValues(allSummary);
     inputfile.close();
-
-    // vector<Summary> allSummary{};
-    // allSummary.resize(12);
-    // int test{0};
-    // for(string s:{"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Okt","Nov","Dec"}){
-    //     allSummary[test].setName(s);
-    //     if(s == "Jan" || s == "Feb"){
-    //         allSummary[test].addSum(10.32);
-    //         allSummary[test].addI();
-    //     }
-    //     test++;
-    // }
-
-    // for(int i = 0; i < 12; i ++){
-    //     int records = allSummary[i].getI();
-
-    //     if(records > 0){
-    //         cout << allSummary[i].getName() << " - " << allSummary[i].getI() << " - " << allSummary[i].getSum() << endl;
-    //     }
-    // }
-    return 0;
+    errorout.close();
+    return 1;
 }
 
 bool isRegular(const string &str){
@@ -156,19 +132,19 @@ bool regularDate(const int &day, const int &month, const int &year){
 
     if(month == feb && isLeap(year) && day > 0 && day <= 29){
         return 1;
-    } else if (month == feb && isLeap(year) && day > 0 && day <= 28){
+    } else if (month == feb && !isLeap(year) && day > 0 && day <= 28){
         return 1;
     } else {
         for(int i: thirthyOnes){
             if(month == i && day > 0 && day <= 31){
                 return 1;
-            } else return 0;
+            }
         }
 
         for(int i: thirthy){
             if(month == i && day > 0 && day <= 30){
                 return 1;
-            } else return 0;
+            }
         }
     }
     return 0;
@@ -188,6 +164,7 @@ double atof_improved(const string &str){
     }
     
     sign = (str[i] == '-') ? -1 : 1;
+
     if(str[i] == '-')
         i++;
 
@@ -222,34 +199,24 @@ double atof_improved(const string &str){
     }
 }
 
-void separate(vector<Record> &records, stringstream &line, const int &pos) {
+void separate(vector<Record> &records, stringstream &line, int &pos) {
 
     // Function that reads one line of a CSV file, separates that line into 3 pieces and stores it into suitable variables.
+    ofstream errorout;
+    errorout.open("output.err",ios_base::app);
+    if(!errorout.is_open()) throw runtime_error("Error ocurred while opening the file");
+    string a{},b{},c{};
+    
+    getline(line,a,',');
+    getline(line,b,',');
+    getline(line,c,',');
 
-    string a{};
-    int i{0};
-
-    while(getline(line,a,',')){
-        switch (i){
-            case 0:
-                records[pos].setDate(a);
-                break;
-            case 1:
-            if(isRegular(a)) // Checking if the value that was assigned to a can be converted to a double
-            {
-                records[pos].setValue(atof_improved(a)); // if can be converted, calling function for coversion
-            } else {
-                cout << "Line " << pos+1 << " cannot be converted into a number. Original value " << a << ", date " << records[pos].getDateStr() << endl;
-                //Test line, this should be output into the output.err file.
-                records.pop_back();
-                i++;
-            }
-                break;
-            case 2:
-                records[pos].setComment(a);
-                break;
-        }
-        i++;
+    if(!isRegular(b)){
+        errorout << "Line " << pos+2 << " cannot be converted into a number. Original value " << b << ", date " << a << endl;
+    } else {
+        records[pos].setDate(a);
+        records[pos].setValue(atof_improved(b));
+        records[pos].setComment(c);
     }
 }
 
@@ -263,7 +230,6 @@ void separateDate(vector<Record> &records, string str, const int &pos){
     } else if(str.find('.') != string::npos){
         delimiter = '.';
     } else {
-        cout << "Irregular format of a date." << endl;
     }
 
     while(getline(strs,temp,delimiter)){
@@ -280,4 +246,34 @@ void separateDate(vector<Record> &records, string str, const int &pos){
         }
         i++;
     }
+}
+
+void transferValues(vector<Record> &rec, vector<Summary> &summ){
+    for(int num{0}; num < rec.size(); num++){
+        int day = rec[num].getDay();
+        int month = rec[num].getMonth();
+        int year = rec[num].getYear();
+        if(regularDate(day,month,year)){
+            summ[month-1].addSum(rec[num].getValue());
+            summ[month-1].addI();
+        }
+    }
+}
+
+void outputValues(vector<Summary> &summ){
+    
+    ofstream output("output.csv");
+    if(!output.is_open()) throw runtime_error("Error ocurred while opening the file");
+
+    output << "Mesec,Godina,UkupnoMerenja,Suma" << endl;
+
+    for(int i = 0; i < 12; i ++){
+        int records = summ[i].getI();
+
+        if(records > 0){
+            output << summ[i].getName() << ",2022," << summ[i].getI() << "," << fixed << setprecision(2) << summ[i].getSum() << endl;
+        }
+    }
+
+    output.close();
 }
