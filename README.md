@@ -1,4 +1,6 @@
-# **CSV Summary maker with improved atof() function**       ![GitHub last commit](https://img.shields.io/github/last-commit/caojasamalex/atof_improved)
+# **CSV Summary maker with improved atof() function**
+![GitHub last commit](https://img.shields.io/github/last-commit/caojasamalex/atof_improved) 
+![GitHub last commit](https://img.shields.io/github/commit-activity/m/caojasamalex/atof_improved) 
 
 
 ## Basic Overview
