@@ -7,7 +7,7 @@
 
 The main goal of this project is to develop a software solution that will efficiently and effectively summarize large CSV files provided by a scientific institutes into a much smaller files.
 
-Function atof()  (_atof - alpha-to-float_) is function that, as a name says, converts alpha values into float values. But there is one problem - Function is not working with scientific notation of numbers, like 43.23e<sup>+23</sup>
+Function atof()  (_atof - alpha-to-float_) is function that, as a name says, converts alpha values into float values. But there is one problem - Function is not working with scientific notation of numbers, like 43.23e<sup>+5</sup>
 
 Here, you can find new implemented function that fulfills the need of conversion scientific notation of numbers.
 
@@ -31,7 +31,7 @@ Here, you can find new implemented function that fulfills the need of conversion
 
 You can see that there are some values that are irregular, like some dates and results, etc...
 
-There is implementation of checking and avoiding these values so the output summary is 100% erorr-free.
+There is implementation of checking and avoiding these values so the output summary is containing only correct values.
 
 **Output CSV file would look like the table below:**
 
@@ -51,35 +51,96 @@ As for irregular results, like 432.23e<sup>+tes</sup>, the program saves them in
 
 ## How To Use
 
-#### Step 1 - Getting repository on your system
+### For Windows users
+
+##### Step 1 - Getting repository on your system
+
+*You need to open command promt. After you opened it, type next line:*
+
+```bash
+# Clone the repository
+git clone https://github.com/caojasamalex/atof_improved
+```
+
+##### Step 2 - Editing code with IDE (Skip this step if you don't want to edit anything)
+
+*If you want to edit code with IDE follow these steps:*
+
+1. **Open IDE that you'll use for code editing.**
+2. **Find file atof_improved**
+3. **Open main.cpp file**
+
+*After you finish with these steps you'll have main.cpp file opened in your code editor. Now you can change anything you need.*
+
+*NOTE: After changing the code structure you'll need to compile and build your changed code, and after that you're good to go.*
+
+##### Step 3 - Run
+
+###### Command promt:
+
+*After you opened command promt, you need to type these commands:*
+
+```bash
+#Get in repository
+cd atof_improved
+
+#Locate files
+dir
+
+#Execute
+main
+```
+*Note: If you don't see executable main file you should build and compile code and after that execute it.*
+
+###### IDE:
+
+*After you opened file from a IDE, you can press Run button and code will execute*
+
+### For macOS/Linux users:
+
+##### Step 1 - Getting repository on your system
 
 
-*You need to open command line. After that, type next line:*
+*You need to open terminal. After that, type next line:*
 ```bash
 # Clone this repository
 $ git clone https://github.com/caojasamalex/atof_improved
 ```
 
-#### Step 2 - Editing code (Skip this step if you don't want to edit anything)
+##### Step 2 - Editing code through terminal (Skip this step if you don't want to edit anything)
 
 *If you want to do some changes in the code you can do it from a command line typing commands below:*
 
 ```bash
 # Get in repository
-cd atof_improved
+$ cd atof_improved
 
 # Open main.cpp to edit
-vi main.cpp
+$ vi main.cpp
+
+# Building and compiling changed code
+$ g++ -fdiagnostics-color=always -g -Wall -std=c++17 main.cpp -o main
+
 ```
+*If you don't want to edit code with command line, you can use any IDE with g++ compiler.*
 
-*If you don't want to open file with command line, you can use any c++ IDE*
+##### Step 2 - Editing code with IDE (Skip this step if you don't want to edit anything)
 
+*If you want to edit code with IDE follow these steps:*
 
-#### Step 3 - Run
+1. **Open IDE that you'll use for code editing.**
+2. **Find file atof_improved**
+3. **Open main.cpp file**
 
-##### Command Line:
+*After you finish with these steps you'll have main.cpp file opened in your code editor. Now you can change anything you need.*
 
-*After you opened command line, you need to type these commands:*
+*NOTE: After changing the code structure you'll need to compile and build your changed code, and after that you're good to go.*
+
+##### Step 3 - Run
+
+###### Terminal:
+
+*After you opened terminal, you need to type these commands:*
 
 ```bash
 #Get in repository
@@ -92,7 +153,8 @@ ls
 ./main
 ```
 
-##### IDE:
+*Note: if you are already located in directory you can just type execute line.*
+
+###### IDE:
 
 *After you opened file from a IDE, you can press Run button and code will execute*
-
