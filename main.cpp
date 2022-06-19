@@ -13,7 +13,9 @@ class Summary;
 bool isRegular(const string&);
 bool isLeap(const int&);
 bool regularDate(const int&, const int&, const int&);
-double atof_improved(const string&);
+long double atof_improved(const string&);
+long double calculateExp(string);
+long double calculateBase(const string &str);
 void separateDate(vector<Record>&, string, const int&);
 void separate(vector<Record>&, stringstream&, int&);
 void transferValues(vector<Record>&, vector<Summary>&);
@@ -24,18 +26,18 @@ class Summary{
         string name{};
         int year{};
         int i{};
-        double sum{};
+        long double sum{};
 
     public:
 
         string setName(const string &str){ return name = str; }
         
         int addI(){ return i += 1; }
-        double addSum(const double &val){ return sum += val; }
+        long double addSum(const long double &val){ return sum += val; }
 
         string getName(){ return name; }
         int getI(){ return i; }
-        double getSum(){ return sum; }
+        long double getSum(){ return sum; }
 
         Summary(){
             name = "";
@@ -48,18 +50,18 @@ class Summary{
 class Record{
     private:
         string date{}, comment{};
-        double value{};
+        long double value{};
         int day{}, month{}, year{};
 
     public:
 
         string setDate(const string &str){ return date = str; }
         string setComment(const string &str){ return comment = str; }
-        double setValue(const double &val){ return value = val; }
+        long double setValue(const long double &val){ return value = val; }
 
         string getDateStr(){ return date; }
         string getComment(){ return comment; }
-        double getValue(){ return value; }
+        long double getValue(){ return value; }
 
         int setDay(const int &val){ return day = val; }
         int setMonth(const int &val){ return month = val; }
@@ -152,53 +154,41 @@ bool regularDate(const int &day, const int &month, const int &year){
     return 0;
 }
 
-double atof_improved(const string &str){ 
+long double atof_improved(const string &str){
 
-    // Function that converts string value and returns double value.
-    // Should implement check if the number is regular in this code snippet.
-
-    double value{}, power{};
-    int i{}, sign{}, expsign{}, exp{};
-    string esign{};
-    
-    while(isspace(str[i])){
-        i++;
-    }
-    
-    sign = (str[i] == '-') ? -1 : 1;
-
-    if(str[i] == '-')
-        i++;
-
-    for(value = 0.0; isdigit(str[i]); i++){
-        value = value * 10.0 + (str[i] - '0');
-    }
-        
-    if(str[i] == '.') 
-        i++;
-
-    for(power = 1.0; isdigit(str[i]); i++){
-        value = value * 10.0 + (str[i] - '0');
-        power *= 10.0;
-    }
-
-    if(tolower(str[i]) == 'e') i++;
-
-    if(str[i] == '+' || str[i] == '-')
-    {
-        esign = str[i];
-        i++;
-    }
-
-    for(exp = 0; isdigit(str[i]); i++){
-        exp = exp * 10.0 + (str[i] - '0');
-    }
-
-    if(expsign == '-'){
-        return sign * (value / power) / pow(10,exp);
+    stringstream ss(str);
+    long double base{};
+    if(str.find('e') == string::npos){
+        base = calculateBase(str);
     } else {
-        return sign * (value / power) * pow(10,exp);
+        string baseStr{}, expStr{};
+        getline(ss,baseStr,'e');
+        getline(ss,expStr);
+
+        base = calculateBase(baseStr) * calculateExp(expStr);
     }
+    return base;
+}
+
+long double calculateExp(string str){
+    long double exp{1};
+
+    if(str[0] == '-'){
+        str.erase(0,1);
+        exp *= pow(0.1,stoi(str));
+    } else {
+        exp *= pow(10,stoi(str));
+    }
+
+    return exp;
+}
+
+long double calculateBase(const string &str){
+    stringstream ss(str);
+    string num{}, decimals{};
+    long double calculated = stof(str);
+
+    return calculated;
 }
 
 void separate(vector<Record> &records, stringstream &line, int &pos) {
