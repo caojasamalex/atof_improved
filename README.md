@@ -62,7 +62,7 @@ As for irregular results, like 432.23e<sup>+tes</sup>, the program saves them in
 git clone https://github.com/caojasamalex/atof_improved
 ```
 
-##### Step 2 - Editing code with IDE
+##### Step 2 - Editing code with IDE (Skip this step if you don't want to edit anything)
 
 *If you want to edit code with IDE follow these steps:*
 
