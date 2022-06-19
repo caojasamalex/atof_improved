@@ -28,6 +28,7 @@ Here, you can find new implemented function that fulfills the need of conversion
 | 21.09.2022. | 32.43e+2      |                     |
 | 20.07.2022. | 43.23e+5      |                     |
 | 31/12/2022  | 533.555e+6    | New Year testing    |
+| 31/8/2022   | 1e+0.5        |Testing with decimals exponents|
 
 You can see that there are some values that are irregular, like some dates and results, etc...
 
@@ -40,6 +41,7 @@ There is implementation of checking and avoiding these values so the output summ
 | Januar      | 2022        | 3            | 363.00              |
 | Februar     | 2022        | 1            | 3.00                |
 | Jul         | 2022        | 1            | 4323000.00          |
+| Avgust      | 2022        | 1            | 3.16
 | Septembar   | 2022        | 1            | 3243.00             |
 | Decembar    | 2022        | 1            | 533555000.00        |
 
