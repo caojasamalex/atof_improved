@@ -15,7 +15,7 @@ bool isLeap(const int&);
 bool regularDate(const int&, const int&, const int&);
 long double atof_improved(const string&);
 long double calculateExp(string);
-long double calculateBase(const string &str);
+long double convert(string);
 void separateDate(vector<Record>&, string, const int&);
 void separate(vector<Record>&, stringstream&, int&);
 void transferValues(vector<Record>&, vector<Summary>&);
@@ -159,13 +159,13 @@ long double atof_improved(const string &str){
     stringstream ss(str);
     long double base{};
     if(str.find('e') == string::npos){
-        base = calculateBase(str);
+        base = convert(str);
     } else {
         string baseStr{}, expStr{};
         getline(ss,baseStr,'e');
         getline(ss,expStr);
 
-        base = calculateBase(baseStr) * calculateExp(expStr);
+        base = convert(baseStr) * calculateExp(expStr);
     }
     return base;
 }
@@ -179,16 +179,32 @@ long double calculateExp(string str){
     } else {
         exp *= pow(10,stoi(str));
     }
-
     return exp;
 }
 
-long double calculateBase(const string &str){
-    stringstream ss(str);
-    string num{}, decimals{};
-    long double calculated = stof(str);
+long double convert(string str){
+    int sign{}, pos{0}; // Sign of number and position of decimal point
+    long double converted{};
 
-    return calculated;
+    if(str[0] == '-'){
+        sign = -1;
+        str.erase(0,1);
+    } else {
+        sign = 1;
+    }
+    for(int i=0; i<str.length();i++){
+        if(str[i] == '.'){
+            pos = i + 1;
+        } else {
+            converted = 10 * converted + (str[i] - '0');
+        }
+    }
+
+    if(pos > 0){
+        converted *= pow(0.1,str.length() - pos);
+    }
+
+    return sign * converted;
 }
 
 void separate(vector<Record> &records, stringstream &line, int &pos) {
