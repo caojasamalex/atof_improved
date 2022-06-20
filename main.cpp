@@ -253,7 +253,7 @@ void transferValues(vector<Record> &rec, vector<Summary> &summ){
         int day = rec[num].getDay();
         int month = rec[num].getMonth();
         int year = rec[num].getYear();
-        if(regularDate(day,month,year)){
+        if(regularDate(day,month,year) && rec[num].getYear() == 2022){
             summ[month-1].addSum(rec[num].getValue());
             summ[month-1].addI();
         }
