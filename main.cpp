@@ -108,12 +108,9 @@ int main(){
 
 bool isRegular(const string &str){
     for(int jot{0}; jot<str.length();jot++){
-        if((str[jot] >= 48 && str[jot] < 58) || tolower(str[jot]) == 'e' || str[jot] == '+' || str[jot] == '-' || str[jot] == '.')
+        if(!((str[jot] >= 48 && str[jot] < 58) || tolower(str[jot]) == 'e' || str[jot] == '+' || str[jot] == '-' || str[jot] == '.'))
         {
-            // Checks if the character is not allowed, if character is allowed it continues to the next character.
-            continue;
-        } else {
-            // If character is not allowed loop breaks and returns value of false.
+            // Checks if the character is allowed, if not it breaks loop and returns 0 value.
             return 0;
         }
     }
@@ -122,11 +119,7 @@ bool isRegular(const string &str){
 }
 
 bool isLeap(const int &year){
-    if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0){
-        return 1;
-    } else {
-        return 0;
-    }
+    return((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
 }
 
 bool regularDate(const int &day, const int &month, const int &year){
