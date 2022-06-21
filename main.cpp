@@ -253,7 +253,7 @@ void transferValues(vector<Record> &rec, vector<Summary> &summ){
         int day = rec[num].getDay();
         int month = rec[num].getMonth();
         int year = rec[num].getYear();
-        if(regularDate(day,month,year) && rec[num].getYear() == 2022){
+        if(regularDate(day,month,year) && year == 2022){
             summ[month-1].addSum(rec[num].getValue());
             summ[month-1].addI();
         }
@@ -270,9 +270,7 @@ void outputValues(vector<Summary> &summ){
     output << "Mesec,Godina,UkupnoMerenja,Suma" << endl;
 
     for(int i = 0; i < 12; i ++){
-        int records = summ[i].getI();
-
-        if(records > 0){
+        if(summ[i].getI() > 0){
             output << summ[i].getName() << ",2022," << summ[i].getI() << "," << fixed << setprecision(2) << summ[i].getSum() << endl;
         }
     }
