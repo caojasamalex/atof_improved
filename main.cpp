@@ -5,11 +5,11 @@
 #include <string>
 #include <cmath>
 #include <iomanip>
+#include "src/Record.h"
+#include "src/Summary.h"
 
 using namespace std;
 
-class Record;
-class Summary;
 bool isRegular(const string&);
 bool isLeap(const int&);
 bool regularDate(const int&, const int&, const int&);
@@ -20,57 +20,6 @@ void separateDate(vector<Record>&, string, const int&);
 void separate(vector<Record>&, stringstream&, int&);
 void transferValues(vector<Record>&, vector<Summary>&);
 void outputValues(vector<Summary>&);
-
-class Summary{
-    private:
-        string name{};
-        int year{};
-        int i{};
-        double sum{};
-
-    public:
-
-        string setName(const string &str){ return name = str; }
-        
-        int addI(){ return i += 1; }
-        double addSum(const double &val){ return sum += val; }
-
-        string getName(){ return name; }
-        int getI(){ return i; }
-        double getSum(){ return sum; }
-
-        Summary(){
-            name = "";
-            year = 2022;
-            i = 0;
-            sum = 0.0;
-        }
-};
-
-class Record{
-    private:
-        string date{}, comment{};
-        double value{};
-        int day{}, month{}, year{};
-
-    public:
-
-        string setDate(const string &str){ return date = str; }
-        string setComment(const string &str){ return comment = str; }
-        double setValue(const double &val){ return value = val; }
-
-        string getDateStr(){ return date; }
-        string getComment(){ return comment; }
-        double getValue(){ return value; }
-
-        int setDay(const int &val){ return day = val; }
-        int setMonth(const int &val){ return month = val; }
-        int setYear(const int &val){ return year = val; }
-
-        int getDay() { return day; }
-        int getMonth() { return month; }
-        int getYear() { return year; }
-};
 
 int main(){
     ifstream inputfile("input.csv");
